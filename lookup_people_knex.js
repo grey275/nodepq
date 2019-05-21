@@ -29,14 +29,11 @@ const formatPersonResult = (row, index) => {
   return `- ${index + 1}: ${first_name} ${last_name}, born '${formatDate(birthdate)}'`;
 }
 
-// knex.select().from('')
 const getRowsWithName = (tableName, name) => {
   console.log('name: ', name);
   return knex(knexConfig)(tableName)
     .select()
-    // .then(rows => { console.log('rows: ', rows); })
     .where({ first_name: name })
-    // .orWhere({ last_name: name })
     .catch(error => { throw error; });
 };
 
@@ -45,12 +42,10 @@ const lookupPerson = async (name) => {
   console.log(formatResult(rows, name));
 };
 
-/* If command line argument is given, look up that name.
-   Else export as module. */
 const nameToQuery = process.argv[2];
-if (nameToQuery) {
-  lookupPerson(nameToQuery)
+if (require.main === module ) {
+  lookupPerson(nameToQuery);
 } else {
-  module.exports = { lookupPerson };
+  module.exports = { lookupPerson, formatPersonResult };
 }
 
